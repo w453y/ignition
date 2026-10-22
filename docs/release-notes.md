@@ -16,9 +16,10 @@ nav_order: 9
 
 ### Bug fixes
 
-- Butane: report an error when `compression: gzip` is set on inline contents
-  that are not gzip-compressed, instead of generating a config that fails at
-  first boot ([#2343](https://github.com/coreos/ignition/pull/2343))
+- Butane: report an error when `compression: gzip` is set on inline or local
+  contents, or on a file from a tree, that is not gzip-compressed, instead of
+  generating a config that fails at first boot
+  ([#2343](https://github.com/coreos/ignition/pull/2343))
 
 
 ## Ignition 2.28.0 (2026-10-08)

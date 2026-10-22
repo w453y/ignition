@@ -145,6 +145,9 @@ func translateResource(from Resource, options common.TranslateOptions) (to types
 			r.AddOnError(c, err)
 			return
 		}
+		// Report a mismatch without aborting, so the other diagnostics
+		// are still reported
+		r.AddOnError(c, baseutil.ValidateCompressionFormat(contents, from.Compression))
 		// Validating the contents of the local file from here since there is no way to
 		// get both the filename and filedirectory in the Validate context
 		if strings.HasPrefix(c.String(), "$.ignition.config") {
@@ -292,6 +295,9 @@ func walkTree(yamlPath path.ContextPath, ts *translate.TranslationSet, r *report
 				r.AddOnError(yamlPath, err)
 				return nil
 			}
+			// The compression may come from a storage.files entry for the
+			// same path
+			r.AddOnError(yamlPath, baseutil.ValidateCompressionFormat(contents, file.Contents.Compression))
 			url, compression, err := baseutil.MakeDataURL(contents, file.Contents.Compression, !options.NoResourceAutoCompression)
 			if err != nil {
 				r.AddOnError(yamlPath, err)
